@@ -58,7 +58,7 @@ namespace FFXIVRamWatch.Models
                 {
                     try
                     {
-                        await Task.Run(() => _se.PlaySeAsync(Config.SE.HighThreshold.SoundFile));
+                        await _se.PlaySeAsync(Config.SE.HighThreshold.SoundFile);
                     }
                     catch
                     {
@@ -72,11 +72,15 @@ namespace FFXIVRamWatch.Models
                 {
                     try
                     {
-                        await Task.Run(() => _se.PlaySeAsync(Config.SE.LowThreshold.SoundFile));
+                        await _se.PlaySeAsync(Config.SE.LowThreshold.SoundFile);
                     }
                     catch
                     {
                     }
+                }
+                else
+                {
+                    _se.SetSE(Config.SE.LowThreshold.SoundFile);
                 }
             }
             else
