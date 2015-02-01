@@ -1,37 +1,45 @@
 ﻿using System;
 using System.IO;
-using System.Media;
 using System.Threading.Tasks;
 
 namespace FFXIVRamWatch.Models.SE
 {
     public class SE
     {
-        public LowThreshold LowThreshold { get; set; }
+        public ThresholdBasedSE LowThreshold { get; set; }
 
-        public HighThreshold HighThreshold { get; set; }
+        public ThresholdBasedSE HighThreshold { get; set; }
 
-        private bool LOCK { get; set; }
+        public int ReNotificationIngnoreSeconds { get; set; }
+
+        private DateTime LOCK { get; set; }
         private string SoundFile { get; set; }
+
+        public SE()
+        {
+            if (Config.Initialized)
+            {
+                ReNotificationIngnoreSeconds = Config.SE.ReNotificationIngnoreSeconds;
+                LOCK = DateTime.Now;
+            }
+        }
 
         public Task PlaySeAsync(string soundFile)
         {
-            if (soundFile != SoundFile && !LOCK)
+            if (soundFile != SoundFile)
             {
-                LOCK = true;
-
                 SoundFile = soundFile;
-                soundFile = Path.GetFullPath(soundFile);
-                if (!String.IsNullOrEmpty(soundFile) && File.Exists(soundFile))
+                if (LOCK < DateTime.Now)
                 {
-                    var task = Task.Factory.StartNew(() =>{
-                        var player = new SoundPlayer(soundFile);
-                        player.PlaySync();
-                    });
-
-                    task.ContinueWith(_ => { LOCK = false; });
+                    LOCK = DateTime.Now.AddSeconds(ReNotificationIngnoreSeconds).Add(AudioPlayer.GetSEDuration(soundFile));
+                    soundFile = Path.GetFullPath(soundFile);
+                    if (!String.IsNullOrEmpty(soundFile) && File.Exists(soundFile))
+                    {
+                        AudioPlayer.Play(soundFile);
+                    }
                 }
             }
+
             return null;
         }
 

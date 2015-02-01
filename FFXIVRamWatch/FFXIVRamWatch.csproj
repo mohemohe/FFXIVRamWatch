@@ -46,6 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>InfrastructureAssemblies\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\packages\NAudio.1.7.2\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity">
@@ -77,12 +80,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Models\CheckFFXIV.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ProcessInfomation\BytesInfomation.cs" />
-    <Compile Include="Models\SE\HighThreshold.cs" />
-    <Compile Include="Models\SE\LowThreshold.cs" />
+    <Compile Include="Models\SE\ThresholdBasedSE.cs" />
     <Compile Include="Models\SE\SE.cs" />
     <Compile Include="Views\OutlinedTextBlock.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -109,6 +112,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

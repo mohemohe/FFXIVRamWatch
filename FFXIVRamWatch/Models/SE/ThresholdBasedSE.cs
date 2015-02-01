@@ -1,6 +1,6 @@
 ﻿namespace FFXIVRamWatch.Models.SE
 {
-    public class HighThreshold : SE
+    public class ThresholdBasedSE
     {
         public string SoundFile { get; set; }
 

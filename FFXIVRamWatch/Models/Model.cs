@@ -1,7 +1,6 @@
 ﻿using Livet;
 using Livet.EventListeners;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace FFXIVRamWatch.Models
@@ -14,9 +13,7 @@ namespace FFXIVRamWatch.Models
 
         private readonly SE.SE _se;
         private readonly Timer _timer;
-// ReSharper disable InconsistentNaming
         public CheckFFXIV checkFfxiv;
-// ReSharper restore InconsistentNaming
 
         public Model()
         {

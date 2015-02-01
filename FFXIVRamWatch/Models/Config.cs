@@ -45,9 +45,12 @@ namespace FFXIVRamWatch.Models
         private static readonly string AppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string FilePath = Path.Combine(AppPath, FileName);
 
+        public static bool Initialized { get; set; }
+
         public static void Initialize()
         {
             ReadSettings();
+            Initialized = true;
         }
 
         private static dynamic TryReadValue(dynamic source, dynamic check, dynamic defaultValue)
@@ -83,16 +86,17 @@ namespace FFXIVRamWatch.Models
             SE = TryReadValue(settings.SE, null,
                 new SE.SE
                 {
-                    HighThreshold = new HighThreshold
+                    HighThreshold = new ThresholdBasedSE
                     {
                         SoundFile = @".\SE\high.wav",
                         Play = true
                     },
-                    LowThreshold = new LowThreshold
+                    LowThreshold = new ThresholdBasedSE
                     {
                         SoundFile = @".\SE\low.wav",
                         Play = false
-                    }
+                    },
+                    ReNotificationIngnoreSeconds = 60
                 });
         }
 
@@ -110,7 +114,8 @@ namespace FFXIVRamWatch.Models
                 SE = new SE.SE
                 {
                     LowThreshold = SE.LowThreshold,
-                    HighThreshold = SE.HighThreshold
+                    HighThreshold = SE.HighThreshold,
+                    ReNotificationIngnoreSeconds = SE.ReNotificationIngnoreSeconds
                 }
             };
 
