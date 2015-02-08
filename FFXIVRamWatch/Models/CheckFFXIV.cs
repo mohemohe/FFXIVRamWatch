@@ -23,21 +23,28 @@ namespace FFXIVRamWatch.Models
 
         public BytesInfomation VirtualBytesInfomation { get; set; }
 
+        private Process ffxivProcess { get; set; }
+
         public void Check()
         {
+            if (ffxivProcess == null)
+            {
+                ffxivProcess = Process.GetProcessesByName("ffxiv")[0];
+            }
+
             try
             {
-                Process ffxiv = Process.GetProcessesByName("ffxiv")[0];
+                ffxivProcess.Refresh();
+                long privRam = ffxivProcess.PrivateMemorySize64 / 1024 / 1024;
+                long virtRam = ffxivProcess.VirtualMemorySize64 / 1024 / 1024;
 
-                long privRam = ffxiv.PrivateMemorySize64/1024/1024;
-                long virtRam = ffxiv.VirtualMemorySize64/1024/1024;
-
-                ProcessId = ffxiv.Id.ToString();
+                ProcessId = ffxivProcess.Id.ToString();
                 PrivateBytesInfomation = new BytesInfomation {Bytes = privRam, Color = SetColor(privRam)};
                 VirtualBytesInfomation = new BytesInfomation {Bytes = virtRam, Color = SetColor(virtRam)};
             }
             catch
             {
+                ffxivProcess = null;
                 ProcessId = SEARCHING;
                 PrivateBytesInfomation = new BytesInfomation {Bytes = -1, Color = WHITE};
                 VirtualBytesInfomation = new BytesInfomation {Bytes = -1, Color = WHITE};
