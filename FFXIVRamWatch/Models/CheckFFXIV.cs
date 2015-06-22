@@ -29,7 +29,20 @@ namespace FFXIVRamWatch.Models
         {
             if (ffxivProcess == null)
             {
-                ffxivProcess = Process.GetProcessesByName("ffxiv")[0];
+                var processList = Process.GetProcessesByName("ffxiv");
+                if (processList.Length >= 1)
+                {
+                    ffxivProcess = processList[0];
+                }
+            }
+
+            if (ffxivProcess == null)
+            {
+                var processList = Process.GetProcessesByName("ffxiv_dx11");
+                if (processList.Length >= 1)
+                {
+                    ffxivProcess = processList[0];
+                }
             }
 
             try
